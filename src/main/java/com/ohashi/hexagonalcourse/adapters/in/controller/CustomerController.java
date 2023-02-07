@@ -4,6 +4,7 @@ import com.ohashi.hexagonalcourse.adapters.in.controller.mapper.CustomerMapper;
 import com.ohashi.hexagonalcourse.adapters.in.controller.request.CustomerRequest;
 import com.ohashi.hexagonalcourse.adapters.in.controller.response.CustomerResponse;
 import com.ohashi.hexagonalcourse.application.core.domain.Customer;
+import com.ohashi.hexagonalcourse.application.ports.in.DeleteCustomerByIdInputPort;
 import com.ohashi.hexagonalcourse.application.ports.in.FindCustomerByIdInputPort;
 import com.ohashi.hexagonalcourse.application.ports.in.InsertCustomerInputPort;
 import com.ohashi.hexagonalcourse.application.ports.in.UpdateCustomerInputPort;
@@ -18,16 +19,19 @@ import javax.validation.Valid;
 public class CustomerController {
 
     @Autowired
-    private InsertCustomerInputPort insertCustomerInputPort;
+    private CustomerMapper customerMapper;
 
     @Autowired
-    private CustomerMapper customerMapper;
+    private InsertCustomerInputPort insertCustomerInputPort;
 
     @Autowired
     private FindCustomerByIdInputPort findCustomerByIdInputPort;
 
     @Autowired
     private UpdateCustomerInputPort updateCustomerInputPort;
+
+    @Autowired
+    private DeleteCustomerByIdInputPort deleteCustomerByIdInputPort;
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody CustomerRequest customerRequest) {
@@ -50,6 +54,12 @@ public class CustomerController {
 
         updateCustomerInputPort.update(customer, customerRequest.getZipCode());
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable final String id) {
+        deleteCustomerByIdInputPort.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
