@@ -2,6 +2,7 @@ package com.ohashi.hexagonalcourse.config;
 
 import com.ohashi.hexagonalcourse.adapters.out.FindAddressByZipCodeAdapter;
 import com.ohashi.hexagonalcourse.adapters.out.InsertCustomerAdapter;
+import com.ohashi.hexagonalcourse.adapters.out.SendCpfForValidationAdapter;
 import com.ohashi.hexagonalcourse.application.core.usecase.InsertCustomerUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,13 @@ public class InsertCustomerConfig {
     @Bean
     public InsertCustomerUseCase insertCustomerUseCase(
             FindAddressByZipCodeAdapter findAddressByZipCodeAdapter,
-            InsertCustomerAdapter insertCustomerAdapter
+            InsertCustomerAdapter insertCustomerAdapter,
+            SendCpfForValidationAdapter sendCpfForValidationAdapter
     ) {
-        return new InsertCustomerUseCase(findAddressByZipCodeAdapter, insertCustomerAdapter);
+        return new InsertCustomerUseCase(
+                findAddressByZipCodeAdapter,
+                insertCustomerAdapter,
+                sendCpfForValidationAdapter
+        );
     }
 }
